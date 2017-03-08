@@ -1,14 +1,11 @@
 var GroceryList = (props) => (
   <div>
-  <h1>Grocery List</h1>
-    <ul>
-      <li>Apples</li>
-      <li>Bananas</li>
-      <li>Cilantro</li>
-      <li>Doughnut</li>
-      <Jalepenos/>
-      <Kale/>
-    </ul>
+    <h1>Grocery List</h1>
+    {props.items.map((item, index) =>
+      <GroceryListItem key={index} item={item} />
+    )}
+    <Kale />
+    <Jalepenos />
   </div>
 );
 
@@ -20,12 +17,33 @@ var Jalepenos = () => (
   <li>Jalepenos</li>
 );
 
-// var ListItems = () => (
-//   <div>
-//     <h1>Shopping List</h1>
-//     <GroceryList listItem={['Apples', 'Bananas', 'Cellery']}/>
-//   </div>
-// );
+class GroceryListItem extends React.Component {
+  constructor(props) {
+    super(props);
 
+    this.state = {
+      done: false
+    };
+  }
 
-ReactDOM.render(<GroceryList />, document.getElementById('app'));
+  onClickItem() {
+    console.log(this.state.done);
+    this.setState({
+      done: !this.state.done
+    });
+    console.log(this.state.done);
+  }
+
+  render() {
+    var style = {
+      textDecoration: this.state.done ? 'line-through' : 'none'
+    };
+
+    return (
+      <li style={style} onClick={this.onClickItem.bind(this)}>{this.props.item}</li>
+    );
+  }
+}
+
+ReactDOM.render(<GroceryList items={['Mop', 'Razor', 'Floss']}/>, document.getElementById('app'));
+
